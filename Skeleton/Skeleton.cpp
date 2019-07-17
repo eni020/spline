@@ -1,36 +1,3 @@
-//=============================================================================================
-// Mintaprogram: Zöld háromszög. Ervenyes 2018. osztol.
-//
-// A beadott program csak ebben a fajlban lehet, a fajl 1 byte-os ASCII karaktereket tartalmazhat, BOM kihuzando.
-// Tilos:
-// - mast "beincludolni", illetve mas konyvtarat hasznalni
-// - faljmuveleteket vegezni a printf-et kiveve
-// - Mashonnan atvett programresszleteket forrasmegjeloles nelkul felhasznalni es
-// - felesleges programsorokat a beadott programban hagyni!!!!!!! 
-// - felesleges kommenteket a beadott programba irni a forrasmegjelolest kommentjeit kiveve
-// ---------------------------------------------------------------------------------------------
-// A feladatot ANSI C++ nyelvu forditoprogrammal ellenorizzuk, a Visual Studio-hoz kepesti elteresekrol
-// es a leggyakoribb hibakrol (pl. ideiglenes objektumot nem lehet referencia tipusnak ertekul adni)
-// a hazibeado portal ad egy osszefoglalot.
-// ---------------------------------------------------------------------------------------------
-// A feladatmegoldasokban csak olyan OpenGL fuggvenyek hasznalhatok, amelyek az oran a feladatkiadasig elhangzottak 
-// A keretben nem szereplo GLUT fuggvenyek tiltottak.
-//
-// NYILATKOZAT
-// ---------------------------------------------------------------------------------------------
-// Nev    : Hubert Annamaria
-// Neptun : 
-// ---------------------------------------------------------------------------------------------
-// ezennel kijelentem, hogy a feladatot magam keszitettem, es ha barmilyen segitseget igenybe vettem vagy
-// mas szellemi termeket felhasznaltam, akkor a forrast es az atvett reszt kommentekben egyertelmuen jeloltem.
-// A forrasmegjeloles kotelme vonatkozik az eloadas foliakat es a targy oktatoi, illetve a
-// grafhazi doktor tanacsait kiveve barmilyen csatornan (szoban, irasban, Interneten, stb.) erkezo minden egyeb
-// informaciora (keplet, program, algoritmus, stb.). Kijelentem, hogy a forrasmegjelolessel atvett reszeket is ertem,
-// azok helyessegere matematikai bizonyitast tudok adni. Tisztaban vagyok azzal, hogy az atvett reszek nem szamitanak
-// a sajat kontribucioba, igy a feladat elfogadasarol a tobbi resz mennyisege es minosege alapjan szuletik dontes.
-// Tudomasul veszem, hogy a forrasmegjeloles kotelmenek megsertese eseten a hazifeladatra adhato pontokat
-// negativ elojellel szamoljak el es ezzel parhuzamosan eljaras is indul velem szemben.
-//=============================================================================================
 #include "framework.h"
 
 const char * vertexSource = R"(
@@ -105,6 +72,8 @@ public:
 Camera camera;
 const int nTesselatedVertices = 100;
 
+
+//saját kód
 vec4 calculatev(vec4 p0, vec4 p1, vec4 p2, float t0, float t1, float t2) {
 	vec4 p21 = p2 - p1;
 	vec4 p10 = p1 - p0;
@@ -232,7 +201,7 @@ public:
 				return Hermite(p0, v0, t0, p1, v1, t1, t);
 			}
 	}
-
+//saját kód vége
 	void Draw() {
 
 		mat4 VPTransform = camera.V() * camera.P();
@@ -259,6 +228,8 @@ public:
 	}
 };
 
+
+//saját kód
 CatmullRom * crm;
 CatmullRom * crp;
 
@@ -298,6 +269,16 @@ void onDisplay() {
 	glutSwapBuffers();						
 }
 
+void onMouse(int button, int state, int pX, int pY) { 
+	float cX = 2.0f * pX / windowWidth - 1;
+	float cY = 1.0f - 2.0f * pY / windowHeight;
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {  
+		crp->AddControlPoint(cX, cY);
+		glutPostRedisplay();  
+	}
+}
+//saját kód vége
+
 void onKeyboard(unsigned char key, int pX, int pY) {   
 }
 
@@ -307,14 +288,6 @@ void onKeyboardUp(unsigned char key, int pX, int pY) {
 void onMouseMotion(int pX, int pY) {
 }
 
-void onMouse(int button, int state, int pX, int pY) { 
-	float cX = 2.0f * pX / windowWidth - 1;
-	float cY = 1.0f - 2.0f * pY / windowHeight;
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {  
-		crp->AddControlPoint(cX, cY);
-		glutPostRedisplay();  
-	}
-}
 
 void onIdle() {
 	long time = glutGet(GLUT_ELAPSED_TIME); 
